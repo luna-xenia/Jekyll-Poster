@@ -1,10 +1,31 @@
 from tkinter import *
+import os
 
 root = Tk()
+
+postsDirectory = ""
+username = ""
+password = ""
+repository = ""
+
+
+def gitPush(repository, username, password):
+    os.chdir(postsDirectory)
+    #commit
+    commit=os.popen('git add . && git commit -m "New post"')
+    print(commit.read())
+    commit.close()
+    #push
+    push=os.popen("git push")
+    result=push.read()
+    push.close()
+    return result
 
 
 def makePost(x, y, z):
     global file
+
+    os.chdir(postsDirectory + "/_posts")
 
     print("Making file...")
     file = open(x + ".md", "a")
@@ -16,6 +37,7 @@ def makePost(x, y, z):
 
     print("Adding content...")
     file.write(z)
+    gitPush(repository, username, password)
 
 
 def retrieve_input():
